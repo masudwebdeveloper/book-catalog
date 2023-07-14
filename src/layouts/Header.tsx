@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { FiHeart, FiShoppingCart, FiUser } from "react-icons/fi";
+import { FiHeart, FiUser } from "react-icons/fi";
 import SearchBar from "../components/common/SearchBar";
+import {Link} from 'react-router-dom'
 
 const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
-  const [isCartOpen, setIsCartOpen] = useState(false);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -15,21 +15,17 @@ const Header: React.FC = () => {
     setIsUserMenuOpen(!isUserMenuOpen);
   };
 
-  const toggleCart = () => {
-    setIsCartOpen(!isCartOpen);
-  };
-
   return (
-    <header className="bg-gray-900 container md:px-32">
+    <header className="bg-[#FFFFFF] md:px-32">
       <div className="py-4 flex items-center justify-between">
-        <h1 className="text-white text-xl font-semibold">Book Catalog</h1>
+        <h1 className="text-xl font-semibold">Book Catalog</h1>
         {/* this is desktop mode */}
         <nav className="md:flex md:items-center hidden space-x-4">
           <ul className="flex space-x-4">
             <li>
               <a
                 href="#"
-                className="text-white hover:text-gray-300 transition duration-200"
+                className="hover:text-gray-300 transition duration-200"
               >
                 Home
               </a>
@@ -37,17 +33,25 @@ const Header: React.FC = () => {
             <li>
               <a
                 href="#"
-                className="text-white hover:text-gray-300 transition duration-200"
+                className="hover:text-gray-300 transition duration-200"
               >
-                About
+                All Book
               </a>
             </li>
             <li>
               <a
                 href="#"
-                className="text-white hover:text-gray-300 transition duration-200"
+                className="hover:text-gray-300 transition duration-200"
               >
-                Contact
+                Add Book
+              </a>
+            </li>
+            <li>
+              <a
+                href="#"
+                className="hover:text-gray-300 transition duration-200"
+              >
+                Contact us
               </a>
             </li>
           </ul>
@@ -57,27 +61,13 @@ const Header: React.FC = () => {
         <SearchBar />
 
         <div className="md:flex md:items-center hidden space-x-4">
-          <button className="text-white focus:outline-none">
+          <button className="focus:outline-none">
             <FiHeart className="h-6 w-6" />
           </button>
-          <button
-            className="text-white focus:outline-none"
-            onClick={toggleCart}
-          >
-            <FiShoppingCart className="h-6 w-6" />
-          </button>
-          {isCartOpen && (
-            <div className="absolute right-0 mt-12 w-64 bg-white rounded-md shadow-lg">
-              <p className="px-4 py-2 text-gray-800">Cart Items</p>
-              <ul>{/* Render your cart items here */}</ul>
-            </div>
-          )}
+
           {/* this section is user menu */}
           <div className="relative">
-            <button
-              className="text-white focus:outline-none"
-              onClick={toggleUserMenu}
-            >
+            <button className="focus:outline-none" onClick={toggleUserMenu}>
               <FiUser className="h-6 w-6" />
             </button>
             {isUserMenuOpen && (
@@ -91,45 +81,31 @@ const Header: React.FC = () => {
                   </a>
                 </li>
                 <li>
-                  <a
-                    href="#"
+                  <Link to="/login"
                     className="block px-4 py-2 text-gray-800 hover:bg-gray-200"
                   >
                     Login
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a
-                    href="#"
+                  <Link to="/signup"
                     className="block px-4 py-2 text-gray-800 hover:bg-gray-200"
                   >
                     Signup
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a
-                    href="#"
-                    className="block px-4 py-2 text-gray-800 hover:bg-gray-200"
-                  >
-                    Add Book
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
+                  <button
                     className="block px-4 py-2 text-gray-800 hover:bg-gray-200"
                   >
                     Logout
-                  </a>
+                  </button>
                 </li>
               </ul>
             )}
           </div>
         </div>
-        <button
-          className="md:hidden text-white focus:outline-none"
-          onClick={toggleMenu}
-        >
+        <button className="md:hidden focus:outline-none" onClick={toggleMenu}>
           <svg
             className="h-6 w-6 fill-current"
             viewBox="0 0 24 24"
@@ -160,25 +136,25 @@ const Header: React.FC = () => {
         >
           <a
             href="#"
-            className="text-white hover:text-gray-300 transition duration-200 py-2"
+            className=" hover:text-gray-300 transition duration-200 py-2"
           >
             Home
           </a>
           <a
             href="#"
-            className="text-white hover:text-gray-300 transition duration-200 py-2"
+            className=" hover:text-gray-300 transition duration-200 py-2"
           >
             All Book
           </a>
           <a
             href="#"
-            className="text-white hover:text-gray-300 transition duration-200 py-2"
+            className="hover:text-gray-300 transition duration-200 py-2"
           >
             Add Book
           </a>
           <a
             href="#"
-            className="text-white hover:text-gray-300 transition duration-200 py-2"
+            className="hover:text-gray-300 transition duration-200 py-2"
           >
             Contact us
           </a>

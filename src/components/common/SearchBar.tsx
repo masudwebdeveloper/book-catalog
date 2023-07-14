@@ -13,7 +13,7 @@ const SearchBar = () => {
     console.log("Search query:", searchQuery);
   };
   return (
-    <div className="flex items-center bg-white rounded-md">
+    <div className="flex items-center bg-white border border-b-2 border-b-pink-500 rounded-md">
       <form className="md:w-auto w-full" onSubmit={handleSearchSubmit}>
         <input
           type="text"
