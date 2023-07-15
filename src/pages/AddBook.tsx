@@ -1,4 +1,7 @@
+/* eslint-disable @typescript-eslint/no-floating-promises */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState } from "react";
+import { useAddBookMutation } from "../redux/api/apiSlice";
 interface IBookData {
   title: string;
   author: string;
@@ -13,6 +16,7 @@ const AddBook = () => {
   const [publication, setPublication] = useState("");
   const [thumnail, setThumnail] = useState("");
   const [error, setError] = useState("");
+  const [addBook] = useAddBookMutation();
   const bookData: IBookData = {
     title,
     author,
@@ -36,6 +40,7 @@ const AddBook = () => {
       // Clear error and proceed with signup
       setError("");
       // Perform addbook logic here
+      addBook(bookData);
       console.log(bookData);
     }
   };
@@ -49,6 +54,7 @@ const AddBook = () => {
         </div>
       )}
       <form
+        method="POST"
         onSubmit={handleAddbook}
         className="container flex flex-col mx-auto space-y-12"
       >
@@ -62,7 +68,7 @@ const AddBook = () => {
                 id="title"
                 type="text"
                 onChange={(e) => setTitle(e.target.value)}
-                defaultValue={title}
+                value={title}
                 placeholder="Title"
                 className="w-full rounded-md focus:ring focus:ri focus:ri dark:border-gray-700 dark:text-gray-900 p-2"
               />
@@ -75,7 +81,7 @@ const AddBook = () => {
                 id="author"
                 type="text"
                 onChange={(e) => setAuthor(e.target.value)}
-                defaultValue={author}
+                value={author}
                 placeholder="Author"
                 className="p-2 w-full rounded-md focus:ring focus:ri focus:ri dark:border-gray-700 dark:text-gray-900"
               />
@@ -88,7 +94,7 @@ const AddBook = () => {
                 id="genre"
                 type="text"
                 onChange={(e) => setGenre(e.target.value)}
-                defaultValue={genre}
+                value={genre}
                 placeholder="Genre"
                 className="p-2 w-full rounded-md focus:ring focus:ri focus:ri dark:border-gray-700 dark:text-gray-900"
               />
@@ -101,7 +107,7 @@ const AddBook = () => {
                 id="publication"
                 type="text"
                 onChange={(e) => setPublication(e.target.value)}
-                defaultValue={publication}
+                value={publication}
                 placeholder="Publication"
                 className="p-2 w-full rounded-md focus:ring focus:ri focus:ri dark:border-gray-700 dark:text-gray-900"
               />
@@ -114,7 +120,7 @@ const AddBook = () => {
                 id="thumnail"
                 type="text"
                 onChange={(e) => setThumnail(e.target.value)}
-                defaultValue={thumnail}
+                value={thumnail}
                 placeholder="photo url"
                 className="p-2 w-full rounded-md focus:ring focus:ri focus:ri dark:border-gray-700 dark:text-gray-900"
               />
