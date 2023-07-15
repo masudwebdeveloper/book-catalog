@@ -145,7 +145,7 @@ const EditBook = () => {
           </div>
         </fieldset>
         <button
-          className="bg-black w-[100px] mx-auto p-2 rounded-md hover:bg-gray-600 border-2 hover:border-gray-900"
+          className="bg-black w-[150px] mx-auto p-2 rounded-md hover:bg-gray-600 border-2 hover:border-gray-900"
           type="submit"
         >
           Update Book

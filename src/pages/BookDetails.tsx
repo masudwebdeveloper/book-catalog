@@ -1,14 +1,19 @@
 import { useParams } from "react-router-dom";
-import { useGetBookQuery } from "../redux/api/apiSlice";
+import { useAddReviewMutation, useGetBookQuery } from "../redux/api/apiSlice";
 import PreLoader from "../components/common/PreLoader";
 import Error from "../components/common/Error";
 import BookDetailCard from "../components/bookDetails/BookDetailCard";
 import { FiSend } from "react-icons/fi";
 import ReviewCard from "../components/review/ReviewCard";
-
+import { useState } from "react";
+type IReview = { _id:string,avatar: string; review: string; name: string; date: string };
 const BookDetails = () => {
   const { id } = useParams();
   const { data, isLoading, isError } = useGetBookQuery(id);
+  const [addReview, { isError: reviewError, isSuccess }] =
+    useAddReviewMutation();
+  const [review, setReview] = useState("");
+  const [error, setError] = useState("");
 
   let content = null;
   if (isLoading) {
@@ -21,31 +26,6 @@ const BookDetails = () => {
   if (!isLoading && !isError && data.success) {
     content = <BookDetailCard book={data?.data} />;
   }
-
-  const reviewData = [
-    {
-      avater:
-        "https://scontent.fdac138-2.fna.fbcdn.net/v/t39.30808-6/240972713_2898430330487371_1139205994692314943_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=09cbfe&_nc_eui2=AeEISvAiMUmDhOLO_ZTYqdmo3hDpPS20edreEOk9LbR52h2YarCHAlTKsUC0EzakkhGr-bXf2tUfxd61RI8OKWgw&_nc_ohc=C-L4O_NvQYAAX8R5JM8&_nc_ht=scontent.fdac138-2.fna&oh=00_AfBkPiX50SaANmbkwqGH20z3TU4z1mSquICwaM14ixvKlA&oe=64B85C73",
-      review: "It's Good",
-      date: "14 aug, 2023",
-      name: "Masud Rana",
-    },
-    {
-      avater:
-        "https://scontent.fdac138-2.fna.fbcdn.net/v/t39.30808-6/240972713_2898430330487371_1139205994692314943_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=09cbfe&_nc_eui2=AeEISvAiMUmDhOLO_ZTYqdmo3hDpPS20edreEOk9LbR52h2YarCHAlTKsUC0EzakkhGr-bXf2tUfxd61RI8OKWgw&_nc_ohc=C-L4O_NvQYAAX8R5JM8&_nc_ht=scontent.fdac138-2.fna&oh=00_AfBkPiX50SaANmbkwqGH20z3TU4z1mSquICwaM14ixvKlA&oe=64B85C73",
-      review: "It's Good",
-      date: "14 aug, 2023",
-      name: "Masud Rana",
-    },
-    {
-      avater:
-        "https://scontent.fdac138-2.fna.fbcdn.net/v/t39.30808-6/240972713_2898430330487371_1139205994692314943_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=09cbfe&_nc_eui2=AeEISvAiMUmDhOLO_ZTYqdmo3hDpPS20edreEOk9LbR52h2YarCHAlTKsUC0EzakkhGr-bXf2tUfxd61RI8OKWgw&_nc_ohc=C-L4O_NvQYAAX8R5JM8&_nc_ht=scontent.fdac138-2.fna&oh=00_AfBkPiX50SaANmbkwqGH20z3TU4z1mSquICwaM14ixvKlA&oe=64B85C73",
-      review: "It's Good",
-      date: "14 aug, 2023",
-      name: "Masud Rana",
-    },
-  ];
-
   //   console.log(reviews);
   const currentDate = new Date();
   const options: Intl.DateTimeFormatOptions = {
@@ -55,7 +35,30 @@ const BookDetails = () => {
   };
   const fullDate = currentDate.toLocaleDateString("en-US", options);
 
-  console.log(fullDate); // Output: "15 Jul, 2023"
+  const handleAddReview = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (review === "") {
+      setError("Please fill in all fields.");
+    }
+
+    const reviewData = {
+      review,
+      date: fullDate,
+      name: "Masud Rana",
+      avatar: "",
+    };
+
+    addReview({ id, data: reviewData });
+
+    if (reviewError) {
+      setError("Review Adding has an Error Occurred!");
+    }
+    if (isSuccess) {
+      setReview("");
+    }
+  };
+
+  console.log(data?.data.reviews); // Output: "15 Jul, 2023"
   return (
     <div className="sm:px-60 mt-10">
       <div>{content}</div>
@@ -63,11 +66,18 @@ const BookDetails = () => {
         <h2 className="text-gray-700 font-semibold text-xl mb-3">
           This Book Reviews
         </h2>
-        <form method="post">
+        {error && (
+          <div className="bg-red-100 text-red-600 px-4 py-2 mb-4 rounded-md">
+            {error}
+          </div>
+        )}
+        <form onSubmit={handleAddReview} method="post">
           <label htmlFor="review" className="flex bg-white border-2">
             <input
               className="w-full bg-transparent p-2"
               type="text"
+              value={review}
+              onChange={(e) => setReview(e.target.value)}
               placeholder="Write a review"
               name="review"
               id="review"
@@ -78,12 +88,10 @@ const BookDetails = () => {
           </label>
         </form>
         <div className="mt-5 bg-white p-2">
-          {/* {data?.data?.reviews.lenght > 0 &&
-            data?.data?.reviews.map((review) => (
-              <ReviewCard reviews={review} />
-            ))} */}
-          {reviewData &&
-            reviewData.map((review) => <ReviewCard reviews={review} />)}
+          {data?.data.reviews.length > 0 &&
+            data?.data.reviews.map((review: IReview) => (
+              <ReviewCard key={review._id} reviews={review} />
+            ))}
         </div>
       </div>
     </div>

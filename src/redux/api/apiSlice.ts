@@ -11,7 +11,8 @@ export const api = createApi({
     }),
     getBook: builder.query({
       query: (id) => `/book/${id}`,
-      providesTags: ["Books"],
+      providesTags: ["Books", "Rivews"],
+      keepUnusedDataFor: 600,
     }),
     addBook: builder.mutation({
       query: (data) => ({
@@ -36,6 +37,14 @@ export const api = createApi({
       }),
       invalidatesTags: ["Books"],
     }),
+    addReview: builder.mutation({
+      query: ({ id, data }) => ({
+        url: `/book/${id}`,
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["Rivews"],
+    }),
   }),
 });
 
@@ -45,4 +54,5 @@ export const {
   useGetBookQuery,
   useDeleteBookMutation,
   useEditBookMutation,
+  useAddReviewMutation,
 } = api;

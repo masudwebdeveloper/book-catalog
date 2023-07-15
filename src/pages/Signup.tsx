@@ -1,5 +1,7 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../redux/hook";
+import { createUser } from "../redux/features/user/userSlice";
 
 const SignupPage: React.FC = () => {
   const [name, setName] = useState("");
@@ -7,10 +9,12 @@ const SignupPage: React.FC = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const { user } = useAppSelector((state) => state.user);
 
   const handleSignup = (e: React.FormEvent) => {
     e.preventDefault();
-
     // Perform signup logic and error handling
     if (
       name === "" ||
@@ -25,8 +29,16 @@ const SignupPage: React.FC = () => {
       // Clear error and proceed with signup
       setError("");
       // Perform signup logic here
+
+      dispatch(createUser({ email: email, password: password }));
     }
   };
+
+  useEffect(() => {
+    if (user?.email) {
+      navigate("/login");
+    }
+  }, [navigate, user?.email]);
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
