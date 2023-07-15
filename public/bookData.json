@@ -5,7 +5,7 @@
     "genre": "Genre 1",
     "publicationDate": "2022-01-01",
     "reviews": 4.5,
-    "wishlist": [],
+    "wishlist": ["masud@gmail.com"],
     "thumnail": ""
   },
   {
@@ -14,7 +14,7 @@
     "genre": "Genre 2",
     "publicationDate": "2022-02-01",
     "reviews": 3.8,
-    "wishlist": [],
+    "wishlist": ["masud@gmail.com", "rana@gmail.com"],
     "thumnail": ""
   },
   {
@@ -32,7 +32,7 @@
     "genre": "Genre 4",
     "publicationDate": "2022-04-01",
     "reviews": 4.7,
-    "wishlist": [],
+    "wishlist": ["masud@gmail.com", "rana@gmail.com"],
     "thumnail": ""
   },
   {
@@ -50,7 +50,7 @@
     "genre": "Genre 6",
     "publicationDate": "2022-06-01",
     "reviews": 3.9,
-    "wishlist": [],
+    "wishlist": ["masud@gmail.com", "rana@gmail.com"],
     "thumnail": ""
   },
   {
@@ -68,7 +68,7 @@
     "genre": "Genre 8",
     "publicationDate": "2022-08-01",
     "reviews": 4.6,
-    "wishlist": [],
+    "wishlist": ["rana@gmail.com"],
     "thumnail": ""
   },
   {
@@ -86,7 +86,7 @@
     "genre": "Genre 10",
     "publicationDate": "2022-10-01",
     "reviews": 4.8,
-    "wishlist": [],
+    "wishlist": ["masud@gmail.com"],
     "thumnail": ""
   }
 ]

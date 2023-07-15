@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../redux/hook";
 import { loginUser } from "../redux/features/user/userSlice";
+import { toast } from "react-hot-toast";
 
 const LoginPage: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -22,11 +23,15 @@ const LoginPage: React.FC = () => {
       setError("");
       // Perform login logic here
       dispatch(loginUser({ email: email, password: password }));
-      if (user.email) {
-        navigate("/");
-      }
     }
   };
+
+  useEffect(() => {
+    if (user.email) {
+      toast.success("login successfull");
+      navigate("/");
+    }
+  }, [navigate, user.email]);
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">

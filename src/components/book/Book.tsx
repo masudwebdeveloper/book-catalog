@@ -8,7 +8,6 @@ interface BookProps {
 
 const Book: React.FC<BookProps> = ({ book }) => {
   const { title, author, genre, publication, thumnail, _id } = book;
-  console.log(book);
 
   return (
     <div className="rounded-md shadow-md dark:bg-gray-900 dark:text-gray-100">

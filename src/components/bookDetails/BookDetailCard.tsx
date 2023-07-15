@@ -13,7 +13,9 @@ const BookDetailCard = ({ book }: BookProps) => {
   const [deleteBook, { isLoading, isSuccess, isError }] =
     useDeleteBookMutation();
   const handleDeleteBook = () => {
-    if (_id) deleteBook(_id);
+    const process = confirm("do you want to delete this book");
+
+    if (process && _id) deleteBook(_id);
   };
   useEffect(() => {
     if (isSuccess) {

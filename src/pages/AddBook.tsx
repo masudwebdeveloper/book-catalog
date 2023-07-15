@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useAddBookMutation } from "../redux/api/apiSlice";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-hot-toast";
 interface IBookData {
   title: string;
   author: string;
@@ -50,6 +51,7 @@ const AddBook = () => {
   useEffect(() => {
     if (isSuccess) {
       navigate("/");
+      toast.success("book added successfull ");
     }
   }, [isSuccess, navigate]);
 

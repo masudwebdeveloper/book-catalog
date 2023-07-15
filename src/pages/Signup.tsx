@@ -1,23 +1,24 @@
-import React, { useState, useEffect } from "react";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../redux/hook";
-import { createUser } from "../redux/features/user/userSlice";
+import { useAppDispatch } from "../redux/hook";
+import { createUser, updateUser } from "../redux/features/user/userSlice";
 
 const SignupPage: React.FC = () => {
   const [name, setName] = useState("");
+  const [photo, setPhoto] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { user } = useAppSelector((state) => state.user);
 
-  const handleSignup = (e: React.FormEvent) => {
+  const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Perform signup logic and error handling
     if (
       name === "" ||
+      photo === "" ||
       email === "" ||
       password === "" ||
       confirmPassword === ""
@@ -26,19 +27,21 @@ const SignupPage: React.FC = () => {
     } else if (password !== confirmPassword) {
       setError("Passwords do not match.");
     } else {
-      // Clear error and proceed with signup
       setError("");
-      // Perform signup logic here
+      try {
+        // Create the user
+        await dispatch(createUser({ email: email, password: password }));
 
-      dispatch(createUser({ email: email, password: password }));
+        // Update the user profile
+        await dispatch(updateUser({ displayName: name, photoURL: photo }));
+
+        // If everything is successful, navigate to the login page
+        navigate("/login");
+      } catch (error: any) {
+        setError(error.message);
+      }
     }
   };
-
-  useEffect(() => {
-    if (user?.email) {
-      navigate("/login");
-    }
-  }, [navigate, user?.email]);
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
@@ -61,6 +64,19 @@ const SignupPage: React.FC = () => {
               onChange={(e) => setName(e.target.value)}
               className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="Enter your name"
+            />
+          </div>
+          <div>
+            <label htmlFor="photourl" className="text-gray-700 font-medium">
+              Photo Url
+            </label>
+            <input
+              type="text"
+              id="photourl"
+              value={photo}
+              onChange={(e) => setPhoto(e.target.value)}
+              className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Enter your profile photo url"
             />
           </div>
           <div>

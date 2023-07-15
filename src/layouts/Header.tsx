@@ -5,7 +5,11 @@ import { Link } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../redux/hook";
 import { signOut } from "firebase/auth";
 import { auth } from "../lib/firebase";
-import { setUser } from "../redux/features/user/userSlice";
+import {
+  setDisplayName,
+  setPhotoUrl,
+  setUser,
+} from "../redux/features/user/userSlice";
 
 const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -24,6 +28,8 @@ const Header: React.FC = () => {
   const handleLogut = () => {
     signOut(auth).then(() => {
       dispatch(setUser(null));
+      dispatch(setDisplayName(null));
+      dispatch(setPhotoUrl(null));
     });
   };
 
@@ -39,16 +45,8 @@ const Header: React.FC = () => {
                 to="/"
                 className="hover:text-gray-300 transition duration-200"
               >
-                Home
+                All Books
               </Link>
-            </li>
-            <li>
-              <a
-                href="#"
-                className="hover:text-gray-300 transition duration-200"
-              >
-                All Book
-              </a>
             </li>
             <li>
               <Link

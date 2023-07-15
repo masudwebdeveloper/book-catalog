@@ -6,7 +6,14 @@ import BookDetailCard from "../components/bookDetails/BookDetailCard";
 import { FiSend } from "react-icons/fi";
 import ReviewCard from "../components/review/ReviewCard";
 import { useState } from "react";
-type IReview = { _id:string,avatar: string; review: string; name: string; date: string };
+import { useAppSelector } from "../redux/hook";
+type IReview = {
+  _id: string;
+  avatar: string;
+  review: string;
+  name: string;
+  date: string;
+};
 const BookDetails = () => {
   const { id } = useParams();
   const { data, isLoading, isError } = useGetBookQuery(id);
@@ -14,7 +21,7 @@ const BookDetails = () => {
     useAddReviewMutation();
   const [review, setReview] = useState("");
   const [error, setError] = useState("");
-
+  const { user } = useAppSelector((state) => state.user);
   let content = null;
   if (isLoading) {
     content = <PreLoader />;
@@ -44,21 +51,16 @@ const BookDetails = () => {
     const reviewData = {
       review,
       date: fullDate,
-      name: "Masud Rana",
-      avatar: "",
+      name: user?.displayName,
+      avatar: user?.photoURL,
     };
 
     addReview({ id, data: reviewData });
-
+    setReview("");
     if (reviewError) {
       setError("Review Adding has an Error Occurred!");
     }
-    if (isSuccess) {
-      setReview("");
-    }
   };
-
-  console.log(data?.data.reviews); // Output: "15 Jul, 2023"
   return (
     <div className="sm:px-60 mt-10">
       <div>{content}</div>
@@ -74,7 +76,7 @@ const BookDetails = () => {
         <form onSubmit={handleAddReview} method="post">
           <label htmlFor="review" className="flex bg-white border-2">
             <input
-              className="w-full bg-transparent p-2"
+              className="w-full bg-transparent p-2 focus:outline-none"
               type="text"
               value={review}
               onChange={(e) => setReview(e.target.value)}

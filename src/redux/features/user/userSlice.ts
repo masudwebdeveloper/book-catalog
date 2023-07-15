@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  updateProfile,
 } from "firebase/auth";
 import { auth } from "../../../lib/firebase";
 import type { PayloadAction } from "@reduxjs/toolkit";
@@ -9,9 +10,15 @@ interface ICredential {
   email: string;
   password: string;
 }
+interface IUserData {
+  displayName: string;
+  photoURL: string;
+}
 interface IUser {
   user: {
     email: string | null;
+    displayName: string | null;
+    photoURL: string | null;
   };
   isLoading: boolean;
   isError: boolean;
@@ -20,6 +27,8 @@ interface IUser {
 const initialState: IUser = {
   user: {
     email: null,
+    displayName: null,
+    photoURL: null,
   },
   isLoading: false,
   isError: false,
@@ -34,6 +43,20 @@ export const createUser = createAsyncThunk(
     return data.user.email;
   }
 );
+export const updateUser = createAsyncThunk(
+  "user/updateUser",
+  async (userData: IUserData) => {
+    const user = auth.currentUser;
+    if (user) {
+      await updateProfile(user, userData);
+      const updatedUser = { ...user, ...userData };
+      return updatedUser;
+    } else {
+      throw new Error("No authenticated user found.");
+    }
+  }
+);
+
 export const loginUser = createAsyncThunk(
   "user/loginUser",
   async ({ email, password }: ICredential) => {
@@ -50,6 +73,12 @@ const userSlice = createSlice({
   reducers: {
     setUser: (state, action: PayloadAction<string | null>) => {
       state.user.email = action.payload;
+    },
+    setDisplayName: (state, action: PayloadAction<string | null>) => {
+      state.user.displayName = action.payload;
+    },
+    setPhotoUrl: (state, action: PayloadAction<string | null>) => {
+      state.user.photoURL = action.payload;
     },
     setLoading: (state, action: PayloadAction<boolean>) => {
       state.isLoading = action.payload;
@@ -90,8 +119,25 @@ const userSlice = createSlice({
         state.isError = true;
         state.user.email = null;
         state.error = action.error.message;
+      })
+      .addCase(updateUser.pending, (state) => {
+        state.isLoading = true;
+        state.isError = false;
+        state.error = undefined;
+      })
+      .addCase(updateUser.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.user = action.payload;
+        state.isError = false;
+        state.error = undefined;
+      })
+      .addCase(updateUser.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.user.email = null;
+        state.error = action.error.message;
       });
   },
 });
-export const { setUser, setLoading } = userSlice.actions;
+export const { setUser,setDisplayName, setPhotoUrl, setLoading } = userSlice.actions;
 export default userSlice.reducer;
