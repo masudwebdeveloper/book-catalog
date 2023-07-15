@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { useAddBookMutation } from "../redux/api/apiSlice";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { useEditBookMutation, useGetBookQuery } from "../../redux/api/apiSlice";
 interface IBookData {
   title: string;
   author: string;
@@ -8,14 +8,23 @@ interface IBookData {
   publication: string;
   thumnail: string;
 }
-const AddBook = () => {
-  const [title, setTitle] = useState("");
-  const [author, setAuthor] = useState("");
-  const [genre, setGenre] = useState("");
-  const [publication, setPublication] = useState("");
-  const [thumnail, setThumnail] = useState("");
+const EditBook = () => {
+  const { id } = useParams();
+  const [editBook, { isLoading, isError, isSuccess }] = useEditBookMutation();
+  const { data } = useGetBookQuery(id);
+  const {
+    title: initialTitle,
+    author: initialAuthor,
+    genre: initialGenre,
+    publication: initialPublication,
+    thumnail: initialThumnail,
+  } = data.data;
+  const [title, setTitle] = useState(initialTitle);
+  const [author, setAuthor] = useState(initialAuthor);
+  const [genre, setGenre] = useState(initialGenre);
+  const [publication, setPublication] = useState(initialPublication);
+  const [thumnail, setThumnail] = useState(initialThumnail);
   const [error, setError] = useState("");
-  const [addBook, { isLoading, isError, isSuccess }] = useAddBookMutation();
   const navigate = useNavigate();
 
   const bookData: IBookData = {
@@ -38,12 +47,12 @@ const AddBook = () => {
     ) {
       setError("Please fill in all fields.");
     } else if (!isLoading && isError) {
-      setError("Adding book has an Error occurred!");
+      setError("Updating book has an Error occurred!");
     } else {
       // Clear error and proceed with signup
       setError("");
       // Perform addbook logic here
-      addBook(bookData);
+      editBook({ id, data: bookData });
     }
   };
 
@@ -55,7 +64,7 @@ const AddBook = () => {
 
   return (
     <section className="p-6 md:px-32 dark:text-gray-50">
-      <h2 className="text-3xl font-bold text-gray-800 mb-6">Add Book</h2>
+      <h2 className="text-3xl font-bold text-gray-800 mb-6">Edit Book</h2>
       {error && (
         <div className="bg-red-100 text-red-600 px-4 py-2 mb-4 rounded-md">
           {error}
@@ -139,11 +148,11 @@ const AddBook = () => {
           className="bg-black w-[100px] mx-auto p-2 rounded-md hover:bg-gray-600 border-2 hover:border-gray-900"
           type="submit"
         >
-          Add Book
+          Update Book
         </button>
       </form>
     </section>
   );
 };
 
-export default AddBook;
+export default EditBook;

@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDeleteBookMutation } from "../../redux/api/apiSlice";
 import { IBook } from "../../types/globalTypes";
 import { useEffect } from "react";
@@ -44,9 +44,12 @@ const BookDetailCard = ({ book }: BookProps) => {
         </p>
       </div>
       <div className="flex flex-col space-y-3">
-        <button className="hover:scale-105 transition duration-150 bg-[#FFAC30] w-[150px] py-2 mx-auto rounded font-bold text-white text-xl">
+        <Link
+          to={`/editbook/${_id}`}
+          className="hover:scale-105 transition duration-150 bg-[#FFAC30] w-[150px] py-2 mx-auto rounded font-bold text-white text-center text-xl"
+        >
           Edit Book
-        </button>
+        </Link>
         <button
           onClick={handleDeleteBook}
           className="border-2 hover:border-gray-500 bg-red-500 w-[150px] py-2 mx-auto rounded font-bold text-white text-xl"
