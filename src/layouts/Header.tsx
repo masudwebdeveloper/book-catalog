@@ -39,12 +39,12 @@ const Header: React.FC = () => {
               </a>
             </li>
             <li>
-              <a
-                href="#"
+              <Link
+                to="/addbook"
                 className="hover:text-gray-300 transition duration-200"
               >
                 Add Book
-              </a>
+              </Link>
             </li>
             <li>
               <a
