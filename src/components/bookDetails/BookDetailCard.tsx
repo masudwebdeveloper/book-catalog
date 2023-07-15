@@ -1,10 +1,25 @@
+import { useNavigate } from "react-router-dom";
+import { useDeleteBookMutation } from "../../redux/api/apiSlice";
 import { IBook } from "../../types/globalTypes";
+import { useEffect } from "react";
+import Error from "../common/Error";
 
 interface BookProps {
   book: IBook;
 }
 const BookDetailCard = ({ book }: BookProps) => {
-  const { title, author, thumnail, genre, publication, reviews } = book;
+  const { title, author, thumnail, genre, publication, reviews, _id } = book;
+  const navigate = useNavigate();
+  const [deleteBook, { isLoading, isSuccess, isError }] =
+    useDeleteBookMutation();
+  const handleDeleteBook = () => {
+    if (_id) deleteBook(_id);
+  };
+  useEffect(() => {
+    if (isSuccess) {
+      navigate("/");
+    }
+  }, [isSuccess, navigate]);
   return (
     <div className="grid grid-cols-3 gap-5 items-center bg-white sm:p-2 rounded">
       <div className="border border-gray-600 p-2 rounded">
@@ -32,12 +47,20 @@ const BookDetailCard = ({ book }: BookProps) => {
         <button className="hover:scale-105 transition duration-150 bg-[#FFAC30] w-[150px] py-2 mx-auto rounded font-bold text-white text-xl">
           Edit Book
         </button>
-        <button className="border-2 hover:border-gray-500 bg-red-500 w-[150px] py-2 mx-auto rounded font-bold text-white text-xl">
-          Delete Book
+        <button
+          onClick={handleDeleteBook}
+          className="border-2 hover:border-gray-500 bg-red-500 w-[150px] py-2 mx-auto rounded font-bold text-white text-xl"
+        >
+          {isLoading ? "waiting..." : "Delete Book"}
         </button>
         <button className="bg-white border-2 hover:bg-green-500 hover:text-white transition-all duration-100 border-green-500 w-[160px] py-2 mx-auto rounded font-bold text-black text-xl">
           Add to Wishlist
         </button>
+      </div>
+      <div>
+        {!isLoading && isError && (
+          <Error message="There was an error for Deleting this book" />
+        )}
       </div>
     </div>
   );

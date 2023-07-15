@@ -78,8 +78,12 @@ const BookDetails = () => {
           </label>
         </form>
         <div className="mt-5 bg-white p-2">
-          {data?.data?.reviews.lenght > 0 &&
-            data?.data?.reviews.map((review) => <ReviewCard reviews={review}/>)}
+          {/* {data?.data?.reviews.lenght > 0 &&
+            data?.data?.reviews.map((review) => (
+              <ReviewCard reviews={review} />
+            ))} */}
+          {reviewData &&
+            reviewData.map((review) => <ReviewCard reviews={review} />)}
         </div>
       </div>
     </div>
