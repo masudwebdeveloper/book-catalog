@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../redux/hook";
 import { loginUser } from "../redux/features/user/userSlice";
 import { toast } from "react-hot-toast";
@@ -11,6 +11,8 @@ const LoginPage: React.FC = () => {
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.user);
   const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
@@ -29,9 +31,9 @@ const LoginPage: React.FC = () => {
   useEffect(() => {
     if (user.email) {
       toast.success("login successfull");
-      navigate("/");
+      navigate(from, { replace: true });
     }
-  }, [navigate, user.email]);
+  }, [from, navigate, user?.email]);
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">

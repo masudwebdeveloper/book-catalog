@@ -2,12 +2,14 @@ import { useState, useEffect } from "react";
 import { useAddBookMutation } from "../redux/api/apiSlice";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
+import { useAppSelector } from "../redux/hook";
 interface IBookData {
   title: string;
   author: string;
   genre: string;
   publication: string;
   thumnail: string;
+  email: string;
 }
 const AddBook = () => {
   const [title, setTitle] = useState("");
@@ -18,6 +20,7 @@ const AddBook = () => {
   const [error, setError] = useState("");
   const [addBook, { isLoading, isError, isSuccess }] = useAddBookMutation();
   const navigate = useNavigate();
+  const { user } = useAppSelector((state) => state.user);
 
   const bookData: IBookData = {
     title,
@@ -25,6 +28,7 @@ const AddBook = () => {
     genre,
     publication,
     thumnail,
+    email: user?.email as string,
   };
   const handleAddbook = (e: React.FormEvent) => {
     e.preventDefault();

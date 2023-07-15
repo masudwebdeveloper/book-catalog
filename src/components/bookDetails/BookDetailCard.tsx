@@ -3,6 +3,7 @@ import { useDeleteBookMutation } from "../../redux/api/apiSlice";
 import { IBook } from "../../types/globalTypes";
 import { useEffect } from "react";
 import Error from "../common/Error";
+import PrivateRoute from "../../routes/PrivateRoute";
 
 interface BookProps {
   book: IBook;
@@ -52,12 +53,14 @@ const BookDetailCard = ({ book }: BookProps) => {
         >
           Edit Book
         </Link>
-        <button
-          onClick={handleDeleteBook}
-          className="border-2 hover:border-gray-500 bg-red-500 w-[150px] py-2 mx-auto rounded font-bold text-white text-xl"
-        >
-          {isLoading ? "waiting..." : "Delete Book"}
-        </button>
+        <PrivateRoute>
+          <button
+            onClick={handleDeleteBook}
+            className="border-2 hover:border-gray-500 bg-red-500 w-[150px] py-2 mx-auto rounded font-bold text-white text-xl"
+          >
+            {isLoading ? "waiting..." : "Delete Book"}
+          </button>
+        </PrivateRoute>
         <button className="bg-white border-2 hover:bg-green-500 hover:text-white transition-all duration-100 border-green-500 w-[160px] py-2 mx-auto rounded font-bold text-black text-xl">
           Add to Wishlist
         </button>
