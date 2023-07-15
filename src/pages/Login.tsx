@@ -1,21 +1,25 @@
-import React, { useState } from 'react';
-import {Link} from 'react-router-dom'
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { useAppDispatch } from "../redux/hook";
+import { loginUser } from "../redux/features/user/userSlice";
 
 const LoginPage: React.FC = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const dispatch = useAppDispatch();
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
 
     // Perform login logic and error handling
-    if (email === '' || password === '') {
-      setError('Please fill in all fields.');
+    if (email === "" || password === "") {
+      setError("Please fill in all fields.");
     } else {
       // Clear error and proceed with login
-      setError('');
+      setError("");
       // Perform login logic here
+      dispatch(loginUser({ email: email, password: password }));
     }
   };
 
@@ -65,7 +69,7 @@ const LoginPage: React.FC = () => {
           </div>
         </form>
         <p className="text-gray-600 text-sm mt-4">
-          Don't have an account?{' '}
+          Don't have an account?{" "}
           <Link to="/signup" className="text-blue-500 hover:text-blue-700">
             Sign up here.
           </Link>
