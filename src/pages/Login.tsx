@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { useAppDispatch } from "../redux/hook";
+import { Link, useNavigate } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../redux/hook";
 import { loginUser } from "../redux/features/user/userSlice";
 
 const LoginPage: React.FC = () => {
@@ -8,6 +8,8 @@ const LoginPage: React.FC = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const dispatch = useAppDispatch();
+  const { user } = useAppSelector((state) => state.user);
+  const navigate = useNavigate();
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
@@ -20,6 +22,9 @@ const LoginPage: React.FC = () => {
       setError("");
       // Perform login logic here
       dispatch(loginUser({ email: email, password: password }));
+      if (user.email) {
+        navigate("/");
+      }
     }
   };
 

@@ -1,11 +1,17 @@
 import React, { useState } from "react";
 import { FiHeart, FiUser } from "react-icons/fi";
 import SearchBar from "../components/common/SearchBar";
-import {Link} from 'react-router-dom'
+import { Link } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../redux/hook";
+import { signOut } from "firebase/auth";
+import { auth } from "../lib/firebase";
+import { setUser } from "../redux/features/user/userSlice";
 
 const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const { user } = useAppSelector((state) => state.user);
+  const dispatch = useAppDispatch();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -13,6 +19,12 @@ const Header: React.FC = () => {
 
   const toggleUserMenu = () => {
     setIsUserMenuOpen(!isUserMenuOpen);
+  };
+
+  const handleLogut = () => {
+    signOut(auth).then(() => {
+      dispatch(setUser(null));
+    });
   };
 
   return (
@@ -80,27 +92,36 @@ const Header: React.FC = () => {
                     My Account
                   </a>
                 </li>
-                <li>
-                  <Link to="/login"
-                    className="block px-4 py-2 text-gray-800 hover:bg-gray-200"
-                  >
-                    Login
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/signup"
-                    className="block px-4 py-2 text-gray-800 hover:bg-gray-200"
-                  >
-                    Signup
-                  </Link>
-                </li>
-                <li>
-                  <button
-                    className="block px-4 py-2 text-gray-800 hover:bg-gray-200"
-                  >
-                    Logout
-                  </button>
-                </li>
+                {!user.email && (
+                  <>
+                    <li>
+                      <Link
+                        to="/login"
+                        className="block px-4 py-2 text-gray-800 hover:bg-gray-200"
+                      >
+                        Login
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        to="/signup"
+                        className="block px-4 py-2 text-gray-800 hover:bg-gray-200"
+                      >
+                        Signup
+                      </Link>
+                    </li>
+                  </>
+                )}
+                {user.email && (
+                  <li>
+                    <button
+                      onClick={handleLogut}
+                      className="block px-4 py-2 text-gray-800 hover:bg-gray-200 w-full text-left"
+                    >
+                      Logout
+                    </button>
+                  </li>
+                )}
               </ul>
             )}
           </div>
