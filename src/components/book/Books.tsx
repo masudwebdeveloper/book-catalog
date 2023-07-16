@@ -1,11 +1,8 @@
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-
 import { useGetBooksQuery } from "../../redux/api/apiSlice";
 import { useAppSelector } from "../../redux/hook";
 import { IBook } from "../../types/globalTypes";
+import CardPreloader from "../common/CardPreloader";
 import Error from "../common/Error";
-import PreLoader from "../common/PreLoader";
 import Book from "./Book";
 
 const Books = () => {
@@ -18,7 +15,18 @@ const Books = () => {
   });
   let content = null;
   if (isLoading) {
-    content = <PreLoader />;
+    content = (
+      <>
+        <CardPreloader />
+        <CardPreloader />
+        <CardPreloader />
+        <CardPreloader />
+        <CardPreloader />
+        <CardPreloader />
+        <CardPreloader />
+        <CardPreloader />
+      </>
+    );
   }
   if (!isLoading && isError) {
     content = <Error message="There was an error occured!" />;

@@ -7,14 +7,15 @@ export const api = createApi({
   endpoints: (builder) => ({
     getBooks: builder.query({
       query: ({ search, genre, publication }) => {
-        let queryString = `/book?searchTerm=${search}`;
-        if (genre && !publication) {
-          queryString = `/book?searchTerm=${search}&genre=${genre}`;
-        } else if (publication && !genre) {
-          queryString = `/book?searchTerm=${search}&publication=${publication}`;
-        } else if (genre && publication) {
-          queryString = `/book?searchTerm=${search}&genre=${genre}publication=${publication}`;
-        }
+        // let queryString = `/book?searchTerm=${search}`;
+        // if (genre && !publication) {
+        //   queryString = `/book?searchTerm=${search}&genre=${genre}`;
+        // } else if (publication && !genre) {
+        //   queryString = `/book?searchTerm=${search}&publication=${publication}`;
+        // } else if (genre && publication) {
+        //   queryString = `/book?searchTerm=${search}&genre=${genre}publication=${publication}`;
+        // }
+        const queryString = `/book?searchTerm=${encodeURIComponent(search)}${genre ? `&genre=${encodeURIComponent(genre)}` : ''}${publication ? `&publication=${encodeURIComponent(publication)}` : ''}`;
         return queryString;
       },
       providesTags: ["Books"],

@@ -104,27 +104,47 @@ const AddBook = () => {
               <label htmlFor="genre" className="text-sm">
                 Genre
               </label>
-              <input
-                id="genre"
-                type="text"
+              <select
                 onChange={(e) => setGenre(e.target.value)}
-                value={genre}
-                placeholder="Genre"
-                className="p-2 w-full rounded-md focus:ring focus:ri focus:ri dark:border-gray-700 dark:text-gray-900"
-              />
+                className="select select-warning w-full text-black p-2 focus:outline-none border-2"
+                name="genre"
+                defaultValue={genre}
+              >
+                <option selected>Genre</option>
+                <option value="Non-Fiction">Non-Fiction</option>
+                <option value="Historical-Fiction">Historical-Fiction</option>
+                <option value="Science-Fiction">Science-Fiction</option>
+                <option value="Fiction">Fiction</option>
+                <option value="Drama">Drama</option>
+                <option value="Horror">Horror</option>
+                <option value="Romance">Romance</option>
+                <option value="Biography">Biography</option>
+                <option value="Fantasy">Fantasy</option>
+                <option value="Mystery">Mystery</option>
+              </select>
             </div>
             <div className="col-span-full sm:col-span-3">
               <label htmlFor="publication" className="text-sm">
                 Publication
               </label>
-              <input
-                id="publication"
-                type="text"
+              <select
                 onChange={(e) => setPublication(e.target.value)}
-                value={publication}
-                placeholder="Publication"
-                className="p-2 w-full rounded-md focus:ring focus:ri focus:ri dark:border-gray-700 dark:text-gray-900"
-              />
+                className="select select-warning w-full text-black p-2 focus:outline-none border-2"
+                name="publication"
+                defaultValue={publication}
+              >
+                <option selected>Publication</option>
+                <option value="2014">2014</option>
+                <option value="2015">2015</option>
+                <option value="2016">2016</option>
+                <option value="2017">2017</option>
+                <option value="2018">2018</option>
+                <option value="2019">2019</option>
+                <option value="2020">2020</option>
+                <option value="2021">2021</option>
+                <option value="2022">2022</option>
+                <option value="2023">2023</option>
+              </select>
             </div>
             <div className="col-span-full sm:col-span-3">
               <label htmlFor="thumnail" className="text-sm">
