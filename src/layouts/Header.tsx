@@ -12,12 +12,16 @@ import {
 } from "../redux/features/user/userSlice";
 import { setSearch } from "../redux/features/search/searchSlice";
 import { setGenre, setPublication } from "../redux/features/filter/filterSlice";
+import { useGetWishlistsQuery } from "../redux/api/apiSlice";
 
 const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const { user } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
+  const { data } = useGetWishlistsQuery(user?.email, {
+    refetchOnMountOrArgChange: true,
+  });
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -80,9 +84,15 @@ const Header: React.FC = () => {
         <SearchBar />
 
         <div className="md:flex md:items-center hidden space-x-4">
-          <button className="focus:outline-none">
-            <FiHeart className="h-6 w-6" />
-          </button>
+          <Link to="/wishlist" className="relative">
+            <button className="focus:outline-none">
+              <FiHeart className="h-6 w-6" />
+            </button>
+
+            <div className="h-6 w-6 rounded-full flex items-center justify-center absolute -top-2 bg-red-500 px-1 -right-2">
+              <span className="text-white">{data?.data.length}</span>
+            </div>
+          </Link>
 
           {/* this section is user menu */}
           <div className="relative">

@@ -1,9 +1,11 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useDeleteBookMutation } from "../../redux/api/apiSlice";
+import { useDeleteBookMutation, usePostWishlistMutation } from "../../redux/api/apiSlice";
 import { IBook } from "../../types/globalTypes";
 import { useEffect } from "react";
 import Error from "../common/Error";
 import PrivateRoute from "../../routes/PrivateRoute";
+import { useAppSelector } from "../../redux/hook";
+import { toast } from "react-hot-toast";
 
 interface BookProps {
   book: IBook;
@@ -11,12 +13,26 @@ interface BookProps {
 const BookDetailCard = ({ book }: BookProps) => {
   const { title, author, thumnail, genre, publication, reviews, _id } = book;
   const navigate = useNavigate();
+  const { user } = useAppSelector((state) => state.user);
   const [deleteBook, { isLoading, isSuccess, isError }] =
     useDeleteBookMutation();
+  const [addWishlist, { isLoading: wishlistSuccess }] =
+    usePostWishlistMutation();
   const handleDeleteBook = () => {
     const process = confirm("do you want to delete this book");
 
     if (process && _id) deleteBook(_id);
+  };
+  const handleAddWishlist = () => {
+    const wishlistData = {
+      status: "wishlist",
+      email: user?.email,
+      book: _id,
+    };
+    addWishlist(wishlistData);
+    if (wishlistSuccess) {
+      toast.success("add to wishlist");
+    }
   };
   useEffect(() => {
     if (isSuccess) {
@@ -61,7 +77,10 @@ const BookDetailCard = ({ book }: BookProps) => {
             {isLoading ? "waiting..." : "Delete Book"}
           </button>
         </PrivateRoute>
-        <button className="bg-white border-2 hover:bg-green-500 hover:text-white transition-all duration-100 border-green-500 w-[160px] py-2 mx-auto rounded font-bold text-black text-xl">
+        <button
+          onClick={handleAddWishlist}
+          className="bg-white border-2 hover:bg-green-500 hover:text-white transition-all duration-100 border-green-500 w-[160px] py-2 mx-auto rounded font-bold text-black text-xl"
+        >
           Add to Wishlist
         </button>
       </div>

@@ -13,7 +13,7 @@ const Book: React.FC<BookProps> = ({ book }) => {
     <div className="rounded-md shadow-md dark:bg-gray-900 dark:text-gray-100">
       <img
         src={thumnail}
-        alt=""
+        alt={title}
         className="object-catain h-72 object-center w-full rounded-t-md dark:bg-gray-500"
       />
       <div className="flex flex-col justify-between py-4 px-6 space-y-1">

@@ -17,7 +17,7 @@ type IReview = {
 const BookDetails = () => {
   const { id } = useParams();
   const { data, isLoading, isError } = useGetBookQuery(id);
-  const [addReview, { isError: reviewError, isSuccess }] =
+  const [addReview, { isError: reviewError }] =
     useAddReviewMutation();
   const [review, setReview] = useState("");
   const [error, setError] = useState("");
