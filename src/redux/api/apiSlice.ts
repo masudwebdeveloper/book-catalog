@@ -6,7 +6,17 @@ export const api = createApi({
   tagTypes: ["Books", "Rivews"],
   endpoints: (builder) => ({
     getBooks: builder.query({
-      query: () => "/book",
+      query: ({ search, genre, publication }) => {
+        let queryString = `/book?searchTerm=${search}`;
+        if (genre && !publication) {
+          queryString = `/book?searchTerm=${search}&genre=${genre}`;
+        } else if (publication && !genre) {
+          queryString = `/book?searchTerm=${search}&publication=${publication}`;
+        } else if (genre && publication) {
+          queryString = `/book?searchTerm=${search}&genre=${genre}publication=${publication}`;
+        }
+        return queryString;
+      },
       providesTags: ["Books"],
     }),
     getBook: builder.query({

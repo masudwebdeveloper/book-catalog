@@ -10,6 +10,8 @@ import {
   setPhotoUrl,
   setUser,
 } from "../redux/features/user/userSlice";
+import { setSearch } from "../redux/features/search/searchSlice";
+import { setGenre, setPublication } from "../redux/features/filter/filterSlice";
 
 const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -33,6 +35,12 @@ const Header: React.FC = () => {
     });
   };
 
+  const handleAllBook = () => {
+    dispatch(setSearch(""));
+    dispatch(setGenre(""));
+    dispatch(setPublication(""));
+  };
+
   return (
     <header className="bg-[#FFFFFF] md:px-32">
       <div className="py-4 flex items-center justify-between">
@@ -44,6 +52,7 @@ const Header: React.FC = () => {
               <Link
                 to="/"
                 className="hover:text-gray-300 transition duration-200"
+                onClick={handleAllBook}
               >
                 All Books
               </Link>

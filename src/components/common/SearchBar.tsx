@@ -1,7 +1,10 @@
 import { useState } from "react";
 import { FiSearch } from "react-icons/fi";
+import { useAppDispatch } from "../../redux/hook";
+import { setSearch } from "../../redux/features/search/searchSlice";
 const SearchBar = () => {
   const [searchQuery, setSearchQuery] = useState("");
+  const dispatch = useAppDispatch();
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value);
@@ -10,6 +13,8 @@ const SearchBar = () => {
   const handleSearchSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     // Perform search logic
+    dispatch(setSearch(searchQuery));
+    setSearchQuery("");
     console.log("Search query:", searchQuery);
   };
   return (
