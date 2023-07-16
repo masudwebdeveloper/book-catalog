@@ -42,7 +42,7 @@ const Header: React.FC = () => {
   };
 
   return (
-    <header className="bg-[#FFFFFF] md:px-32">
+    <header className="bg-[#FFFFFF] md:px-32 sticky top-0">
       <div className="py-4 flex items-center justify-between">
         <h1 className="text-xl font-semibold">Book Catalog</h1>
         {/* this is desktop mode */}
